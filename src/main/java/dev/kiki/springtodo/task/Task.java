@@ -1,5 +1,8 @@
 package dev.kiki.springtodo.task;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import dev.kiki.springtodo.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,6 +33,11 @@ public class Task {
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private Status status = Status.TODO;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonManagedReference
+    private User user;
 
     @CreatedDate
     @Column(updatable = false)

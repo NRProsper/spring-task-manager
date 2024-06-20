@@ -9,11 +9,10 @@ import io.swagger.v3.oas.annotations.servers.Server;
         info = @Info(
                 contact = @Contact (
                         name = "Nishimwe Prosper",
-                        email = "prosper.rk1@gmail.com",
-                        url = "dev.kiki.com"
+                        email = "prosper.rk1@gmail.com"
                 ),
                 description = "OpenAPI documentation of a Task Manager API v.1.0",
-                title = "OpenAPI specification - Kiki",
+                title = "Task Manager API - Kiki",
                 version = "v.1.0"
         ),
         servers = {
