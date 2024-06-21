@@ -2,6 +2,9 @@ package dev.kiki.springtodo.task;
 
 import dev.kiki.springtodo.common.ApiResponse;
 import dev.kiki.springtodo.exception.ResourceNotFoundException;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,10 +16,16 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/tasks")
+@SecurityRequirement(name = "auth")
+@Tag(name = "Task Controller")
 public class TaskController {
 
     private final TaskService taskService;
 
+    @Operation(
+            description = "Post end-point for Task",
+            summary = "This end-point will help inserting the task into the database"
+    )
     @PostMapping
     public ResponseEntity<ApiResponse<Task>> createTask(
             @Valid @RequestBody TaskDTO taskDTO
@@ -30,6 +39,10 @@ public class TaskController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    @Operation(
+            description = "Get end-point for Task",
+            summary = "This end-point will help getting allTasks"
+    )
     @GetMapping
     public ResponseEntity<ApiResponse<List<Task>>> getAllTasks() {
         List<Task> tasks = taskService.getAllTasks();
@@ -41,6 +54,10 @@ public class TaskController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(
+            description = "Get end-point for Task",
+            summary = "This end-point will help getting a single task"
+    )
     @GetMapping("/{taskId}")
     public ResponseEntity<ApiResponse<Task>> getTask(@PathVariable("taskId") Long taskId) {
         Task task = taskService.getTaskById(taskId);
@@ -52,6 +69,10 @@ public class TaskController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(
+            description = "Delete end-point for Task",
+            summary = "This end-point will help deleting the task from the database"
+    )
     @DeleteMapping("/{taskId}")
     public ResponseEntity<Void> deleteTask(@PathVariable("taskId") Long taskId) {
         try {
@@ -62,6 +83,10 @@ public class TaskController {
         }
     }
 
+    @Operation(
+            description = "Put end-point for Task",
+            summary = "This end-point will help updating the task available the database"
+    )
     @PutMapping("/{taskId}")
     public ResponseEntity<Task> updateTask(
             @PathVariable("taskId") Long taskId,
@@ -75,6 +100,10 @@ public class TaskController {
         }
     }
 
+    @Operation(
+            description = "Patch end-point for Task",
+            summary = "This end-point will help updating the task status only"
+    )
     @PatchMapping("/{taskId}")
     public ResponseEntity<Task> updateStatus(
             @PathVariable("taskId") Long taskId,
