@@ -1,10 +1,10 @@
 package dev.kiki.springtodo.task;
 
-import jakarta.validation.constraints.NotBlank;
-
 public record TaskDTO(
-        @NotBlank(message = "The task title is Mandatory!")
+        Long id,
         String title,
-        String description
+        String description,
+        Status status,
+        Long userId
 ) {
 }

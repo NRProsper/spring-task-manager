@@ -1,6 +1,7 @@
 package dev.kiki.springtodo.user;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import dev.kiki.springtodo.task.Task;
 import jakarta.persistence.*;
@@ -45,7 +46,8 @@ public class User implements UserDetails {
             mappedBy = "user",
             cascade = CascadeType.ALL
     )
-    @JsonBackReference
+    @JsonManagedReference
+    @JsonIgnoreProperties("user")
     private List<Task> tasks;
 
     @CreatedDate

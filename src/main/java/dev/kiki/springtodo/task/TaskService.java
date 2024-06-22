@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -15,13 +16,17 @@ public class TaskService {
     private final TaskRepository taskRepository;
     private final TaskMapper taskMapper;
 
-    public Task createTask(TaskDTO taskDTO) {
-        var task = taskMapper.taskDtoToTask(taskDTO);
+    public Task createTask(TaskCreationDTO taskCreationDTO) {
+        var task = taskMapper.taskDtoToTask(taskCreationDTO);
         return taskRepository.save(task);
     }
 
-    public List<Task> getAllTasks() {
-        return taskRepository.findAll();
+
+    public List<TaskDTO> getAllTasksByUserId(Long userId) {
+        return taskRepository.findAllByUserId(userId)
+                .stream()
+                .map(taskMapper::toTaskDTO)
+                .collect(Collectors.toList());
     }
 
     public Task getTaskById(Long id) {
