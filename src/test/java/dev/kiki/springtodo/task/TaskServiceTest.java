@@ -1,6 +1,5 @@
 package dev.kiki.springtodo.task;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -30,7 +29,7 @@ class TaskServiceTest {
     @Test
     public void should_successfully_save_a_task() {
         //Given
-        TaskDTO taskDto = new TaskDTO(
+        TaskCreationDTO taskCreationDto = new TaskCreationDTO(
                 "Finish coding",
                 "I will make a task manager API"
         );
@@ -46,11 +45,11 @@ class TaskServiceTest {
         savedTask.setStatus(Status.TODO);
         savedTask.setCreateAt(LocalDateTime.now());
 
-        when(taskMapper.taskDtoToTask(taskDto)).thenReturn(task);
+        when(taskMapper.taskDtoToTask(taskCreationDto)).thenReturn(task);
         when(taskRepository.save(task)).thenReturn(savedTask);
 
         //When
-        Task response = taskService.createTask(taskDto);
+        Task response = taskService.createTask(taskCreationDto);
 
         //Then
         assertNotNull(response);
@@ -60,7 +59,7 @@ class TaskServiceTest {
         assertEquals(savedTask.getStatus(), response.getStatus());
         assertEquals(savedTask.getCreateAt(), response.getCreateAt());
 
-        verify(taskMapper, times(1)).taskDtoToTask(taskDto);
+        verify(taskMapper, times(1)).taskDtoToTask(taskCreationDto);
         verify(taskRepository, times(1)).save(task);
 
 

@@ -6,11 +6,13 @@ import dev.kiki.springtodo.task.Task;
 import dev.kiki.springtodo.task.TaskRepository;
 import dev.kiki.springtodo.user.User;
 import dev.kiki.springtodo.user.UserRepository;
+import dev.kiki.springtodo.user.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +25,11 @@ public class Application {
         SpringApplication.run(Application.class, args);
     }
 
-    /*
     @Bean
     CommandLineRunner commandLineRunner(
             TaskRepository taskRepository,
-            UserRepository userRepository
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder
             ) {
         Faker faker = new Faker();
         return args -> {
@@ -36,7 +38,7 @@ public class Application {
                 user.setFirstName(faker.name().firstName());
                 user.setLastName(faker.name().lastName());
                 user.setEmail(faker.internet().safeEmailAddress());
-                user.setPassword(faker.internet().password());
+                user.setPassword(passwordEncoder.encode("mine123@#"));
                 List<Task> tasks = new ArrayList<>();
                 for (int j = 0; j < 5; j++) {
                     Task task = Task.builder()
@@ -53,7 +55,4 @@ public class Application {
             }
         };
     }
-     */
-
-
 }

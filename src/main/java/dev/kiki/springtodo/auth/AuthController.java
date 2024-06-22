@@ -1,10 +1,7 @@
 package dev.kiki.springtodo.auth;
 
 import dev.kiki.springtodo.config.JwtTokenService;
-import dev.kiki.springtodo.user.LoginResponse;
-import dev.kiki.springtodo.user.RegisterUserDTO;
-import dev.kiki.springtodo.user.User;
-import dev.kiki.springtodo.user.UserLoginDTO;
+import dev.kiki.springtodo.user.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,10 +16,11 @@ public class AuthController {
 
     private final AuthService authService;
     private final JwtTokenService jwtTokenService;
+    private final UserMapper userMapper;
 
     @PostMapping("/signup")
-    public ResponseEntity<User> registerUser(@RequestBody RegisterUserDTO userDTO) {
-        return ResponseEntity.ok(authService.registerUser(userDTO));
+    public ResponseEntity<UserResponseDTO> registerUser(@RequestBody RegisterUserDTO userDTO) {
+        return ResponseEntity.ok(userMapper.toUserResponseDTO(authService.registerUser(userDTO)));
     }
 
     @PostMapping("/login")

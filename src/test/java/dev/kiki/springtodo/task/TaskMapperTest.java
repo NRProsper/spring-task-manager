@@ -16,7 +16,7 @@ class TaskMapperTest {
 
     @Test
     public void shouldMapTaskDTOtoTask() {
-        TaskDTO dto = new TaskDTO("Finish Coding", "I will finish the task manager API");
+        TaskCreationDTO dto = new TaskCreationDTO("Finish Coding", "I will finish the task manager API");
         Task task = taskMapper.taskDtoToTask(dto);
 
         assertEquals(dto.title(), task.getTitle());
