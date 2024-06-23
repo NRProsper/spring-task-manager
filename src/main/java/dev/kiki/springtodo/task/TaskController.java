@@ -2,14 +2,12 @@ package dev.kiki.springtodo.task;
 
 import dev.kiki.springtodo.common.ApiResponse;
 import dev.kiki.springtodo.exception.ResourceNotFoundException;
+import dev.kiki.springtodo.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import dev.kiki.springtodo.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +24,6 @@ public class TaskController {
     private final TaskService taskService;
     private final UserService userService;
 
-    Logger logger = LoggerFactory.getLogger(TaskController.class);
 
     @Operation(
             description = "Post end-point for Task",
@@ -65,9 +62,9 @@ public class TaskController {
             summary = "This end-point will help getting a single task"
     )
     @GetMapping("/{taskId}")
-    public ResponseEntity<ApiResponse<Task>> getTask(@PathVariable("taskId") Long taskId) {
-        Task task = taskService.getTaskById(taskId);
-        ApiResponse<Task> response = new ApiResponse<>(
+    public ResponseEntity<ApiResponse<TaskDTO>> getTask(@PathVariable("taskId") Long taskId) {
+        TaskDTO task = taskService.getTaskByIdAndUserId(taskId, userService.getAuthenticatedUserId());
+        ApiResponse<TaskDTO> response = new ApiResponse<>(
                 task,
                 "Task retrieved Sucessfully",
                 HttpStatus.OK.value()

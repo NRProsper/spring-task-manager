@@ -2,6 +2,7 @@ package dev.kiki.springtodo.task;
 
 import dev.kiki.springtodo.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,8 +21,7 @@ public class TaskService {
         var task = taskMapper.taskDtoToTask(taskCreationDTO);
         return taskRepository.save(task);
     }
-
-
+    
     public List<TaskDTO> getAllTasksByUserId(Long userId) {
         return taskRepository.findAllByUserId(userId)
                 .stream()
@@ -29,8 +29,10 @@ public class TaskService {
                 .collect(Collectors.toList());
     }
 
-    public Task getTaskById(Long id) {
-        return taskRepository.findById(id).orElse(null);
+    public TaskDTO getTaskByIdAndUserId(Long taskId, Long userId) {
+        return taskRepository.findByIdAndUserId(taskId, userId)
+                .map(taskMapper::toTaskDTO)
+                .orElseThrow(() -> new RuntimeException("Task not found"));
     }
 
     public void deleteTask(Long id) {
