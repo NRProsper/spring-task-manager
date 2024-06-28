@@ -3,12 +3,10 @@ package dev.kiki.springtodo.user;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import dev.kiki.springtodo.model.BaseEntity;
 import dev.kiki.springtodo.task.Task;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,17 +16,14 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "_user")
 @EntityListeners(AuditingEntityListener.class)
-public class User implements UserDetails {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class User extends BaseEntity implements UserDetails {
 
     private String firstName;
 
@@ -50,9 +45,7 @@ public class User implements UserDetails {
     @JsonIgnoreProperties("user")
     private List<Task> tasks;
 
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

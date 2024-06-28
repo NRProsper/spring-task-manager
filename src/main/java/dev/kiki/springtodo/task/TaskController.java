@@ -79,7 +79,7 @@ public class TaskController {
     @DeleteMapping("/{taskId}")
     public ResponseEntity<Void> deleteTask(@PathVariable("taskId") Long taskId) {
         try {
-            taskService.deleteTask(taskId);
+            taskService.deleteTask(taskId, userService.getAuthenticatedUserId());
             return ResponseEntity.noContent().build();
         }catch (ResourceNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -96,7 +96,7 @@ public class TaskController {
             @RequestBody Task task
     ) {
         try {
-            Task updatedTask = taskService.updateTask(taskId, task);
+            Task updatedTask = taskService.updateTask(taskId, userService.getAuthenticatedUserId(), task);
             return ResponseEntity.ok(updatedTask);
         } catch (ResourceNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -113,7 +113,7 @@ public class TaskController {
             @RequestBody TaskStatusOnlyDTO taskStatusOnly
     ) {
         try {
-            Task updatedTask = taskService.updateStatusOnly(taskId, taskStatusOnly);
+            Task updatedTask = taskService.updateStatusOnly(taskId, userService.getAuthenticatedUserId(), taskStatusOnly);
             return ResponseEntity.ok(updatedTask);
         }catch (ResourceNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

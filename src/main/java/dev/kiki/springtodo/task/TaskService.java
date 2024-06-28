@@ -34,15 +34,15 @@ public class TaskService {
                 .orElseThrow(() -> new RuntimeException("Task not found"));
     }
 
-    public void deleteTask(Long id) {
-        if(!taskRepository.existsById(id)) {
+    public void deleteTask(Long id, Long userId) {
+        if(taskRepository.findByIdAndUserId(id, userId).isEmpty()) {
             throw  new ResourceNotFoundException("Task with id " + id + " not found");
         }
         taskRepository.deleteById(id);
     }
 
-    public Task updateTask(Long id, Task task) {
-        Optional<Task> existingTaskOpt = taskRepository.findById(id);
+    public Task updateTask(Long id, Long userId, Task task) {
+        Optional<Task> existingTaskOpt = taskRepository.findByIdAndUserId(id, userId);
         if(!existingTaskOpt.isPresent()) {
             throw new  ResourceNotFoundException("Task with id " + id + " not found");
         }
@@ -55,8 +55,8 @@ public class TaskService {
         return taskRepository.save(existingTask);
     }
 
-    public Task updateStatusOnly(Long id, TaskStatusOnlyDTO taskStatusOnly) {
-        Optional<Task> existingTaskOpt = taskRepository.findById(id);
+    public Task updateStatusOnly(Long id, Long userId, TaskStatusOnlyDTO taskStatusOnly) {
+        Optional<Task> existingTaskOpt = taskRepository.findByIdAndUserId(id, userId);
         if(!existingTaskOpt.isPresent()) {
             throw new  ResourceNotFoundException("Task with id " + id + " not found");
         }
